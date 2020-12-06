@@ -11,6 +11,8 @@ public class ActionTimeDataStore {
 
     // TODO -TTH- This needs to be thread safe
     public void addEntry(String action, Integer time) {
+        if(null == action || action.isEmpty() || null == time) return;
+
         List<Integer> value;
 
         if (!dataStore.containsKey(action)) {
@@ -20,5 +22,9 @@ public class ActionTimeDataStore {
             value.add(time);
         }
         dataStore.put(action, value);
+    }
+
+    public Map<String, List<Integer>> getStats() {
+        return Collections.unmodifiableMap(dataStore);
     }
 }
