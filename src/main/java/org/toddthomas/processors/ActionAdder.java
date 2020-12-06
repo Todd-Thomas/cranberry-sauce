@@ -3,8 +3,9 @@ package org.toddthomas.processors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.tools.javac.util.Pair;
 import org.toddthomas.models.ActionTimeDataStore;
+
+import java.util.AbstractMap;
 
 public class ActionAdder {
 
@@ -13,7 +14,6 @@ public class ActionAdder {
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final ActionTimeDataStore dataStore;
 
-    // Needed for unit testing
     protected ActionAdder(ActionTimeDataStore dataStore) {
         this.dataStore = dataStore;
     }
@@ -23,17 +23,18 @@ public class ActionAdder {
     }
 
     public void addAction(String input) throws JsonProcessingException {
-        Pair<String, Integer> actionTime = extractValues(input);
-        storeValues(actionTime.fst, actionTime.snd);
+        AbstractMap.SimpleEntry<String, Integer> actionTime = extractValues(input);
+        storeValues(actionTime.getKey(), actionTime.getValue());
     }
 
-    private Pair<String, Integer> extractValues(String input) throws JsonProcessingException {
+    private AbstractMap.SimpleEntry<String, Integer> extractValues(String input) throws JsonProcessingException {
         JsonNode actionNode = OBJECT_MAPPER.readTree(input);
         String action = actionNode.get(ACTION).asText();
         Integer time = actionNode.get(TIME).asInt();
-        return new Pair<>(action, time);
+        return new AbstractMap.SimpleEntry<>(action, time);
     }
 
+    // TODO -TTH- This needs to be thread safe
     private void storeValues(String action, Integer time) {
         dataStore.addEntry(action, time);
     }
