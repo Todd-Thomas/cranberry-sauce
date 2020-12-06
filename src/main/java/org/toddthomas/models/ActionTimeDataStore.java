@@ -1,9 +1,6 @@
 package org.toddthomas.models;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ActionTimeDataStore {
 
@@ -11,20 +8,24 @@ public class ActionTimeDataStore {
 
     // TODO -TTH- This needs to be thread safe
     public void addEntry(String action, Integer time) {
-        if(null == action || action.isEmpty() || null == time) return;
+        if (null == action || action.isEmpty() || null == time) return;
 
-        List<Integer> value;
+        List<Integer> values;
 
         if (!dataStore.containsKey(action)) {
-            value = Collections.singletonList(time);
+            values = new ArrayList<>();
         } else {
-            value = dataStore.get(action);
-            value.add(time);
+            values = dataStore.get(action);
         }
-        dataStore.put(action, value);
+        values.add(time);
+        dataStore.put(action, values);
     }
 
-    public Map<String, List<Integer>> getStats() {
+    public Map<String, List<Integer>> getValues() {
         return Collections.unmodifiableMap(dataStore);
+    }
+
+    protected void clearEntries() {
+        dataStore.clear();
     }
 }
