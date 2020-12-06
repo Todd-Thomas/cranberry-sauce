@@ -23,7 +23,7 @@ public class TestActionAdder extends BaseTest {
     @Test
     public void testAddAction() throws JsonProcessingException {
         actionAdder.addAction(JUMP_100);
-        verify(actionTimeDataStore).addEntry("jump", 100);
+        verify(actionTimeDataStore).addEntry(JUMP, _100);
     }
 
     @Test
@@ -35,12 +35,12 @@ public class TestActionAdder extends BaseTest {
         actionAdder.addAction(RUN_20);
         actionAdder.addAction(CRAWL_1);
         actionAdder.addAction(RUN_30);
-        verify(actionTimeDataStore).addEntry("run", 43);
-        verify(actionTimeDataStore).addEntry("crawl", 123);
-        verify(actionTimeDataStore).addEntry("jump", 200);
-        verify(actionTimeDataStore).addEntry("jump", 321);
-        verify(actionTimeDataStore).addEntry("run", 20);
-        verify(actionTimeDataStore).addEntry("crawl", 1);
-        verify(actionTimeDataStore).addEntry("run", 30);
+        verify(actionTimeDataStore).addEntry("run", _43);
+        verify(actionTimeDataStore).addEntry("crawl", _123);
+        verify(actionTimeDataStore).addEntry("jump", _200);
+        verify(actionTimeDataStore).addEntry("jump", _321);
+        verify(actionTimeDataStore).addEntry("run", _20);
+        verify(actionTimeDataStore).addEntry("crawl", _1);
+        verify(actionTimeDataStore).addEntry("run", _30);
     }
 }
