@@ -7,6 +7,9 @@ import org.toddthomas.models.ActionTimeDataStore;
 
 import java.util.AbstractMap;
 
+/**
+ * Adds an action and its time to the underlying datastore
+ */
 public class ActionAdder {
 
     private static final String ACTION = "action";
@@ -22,6 +25,11 @@ public class ActionAdder {
         this.dataStore = new ActionTimeDataStore();
     }
 
+    /**
+     * Expects a JSON string to parse and insert into the data store
+     * @param input JSON formatted string. Example: {"action":"hop", "time":123}
+     * @throws JsonProcessingException when the string is not a properly formatted
+     */
     public void addAction(String input) throws JsonProcessingException {
         AbstractMap.SimpleEntry<String, Integer> actionTime = extractValues(input);
         storeValues(actionTime.getKey(), actionTime.getValue());

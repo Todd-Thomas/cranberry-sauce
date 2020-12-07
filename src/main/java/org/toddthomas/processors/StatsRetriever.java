@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Retrieves the actions along with the average time per each action
+ */
 public class StatsRetriever {
 
     private final ActionTimeDataStore actionTimeDataStore;
@@ -20,7 +23,11 @@ public class StatsRetriever {
         this.actionTimeDataStore = new ActionTimeDataStore();
     }
 
-
+    /**
+     *
+     * @return JSON formatted string that contains each action and its average duration
+     * @throws JsonProcessingException when the ObjectMapper cannot write the value as a string
+     */
     public String getStats() throws JsonProcessingException {
         List<StatRecord> statsList = new ArrayList<>();
         Map<String, List<Integer>> results = actionTimeDataStore.getValues();
