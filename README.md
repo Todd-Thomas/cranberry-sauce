@@ -1,4 +1,4 @@
-# Action and Stats library
+# Action and Stats Library
 This code is intended to be a simple Java library that accepts action names, with times and 
 can return the statistics based on the average length for each action. Calls to `addAction` 
 and `getStats` are thread safe.
