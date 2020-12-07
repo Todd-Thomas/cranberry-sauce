@@ -63,3 +63,15 @@ working directory under `cranberry-sauce/target/surefire-reports`.
 
 Finally, there is also a JaCoCo code coverage web page report found under `target/site/jacoco/index.html`.
 
+### Stress Test
+There is an additional test that does not get run with others due to it intentionally not following
+the naming convention. This test has many threads making calls to `addAction`. There are several threads
+that call into `getStats`. The output, via STDOUT, illustrates how these threads are concurrently accessing
+the underlying HashMap. 
+
+In order to run the stress test, use the following command:
+
+```
+mvn test -Dtest=MultiThreadAccess
+```
+

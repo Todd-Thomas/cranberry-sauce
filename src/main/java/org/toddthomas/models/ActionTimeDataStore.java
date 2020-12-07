@@ -9,7 +9,8 @@ import java.util.List;
  */
 public class ActionTimeDataStore {
 
-  private static final HashMap<String, List<Integer>> dataStore = new HashMap<>();
+  private static final HashMap<String, List<Integer>> dataStore =
+      new HashMap<>();
 
   /**
    * Adds an action, if it does not already exist, and associates the time.
@@ -25,13 +26,15 @@ public class ActionTimeDataStore {
 
     List<Integer> values;
 
-    if (!dataStore.containsKey(action)) {
-      values = new ArrayList<>();
-    } else {
-      values = dataStore.get(action);
+    synchronized (dataStore) {
+      if (!dataStore.containsKey(action)) {
+        values = new ArrayList<>();
+      } else {
+        values = dataStore.get(action);
+      }
+      values.add(time);
+      dataStore.put(action, values);
     }
-    values.add(time);
-    dataStore.put(action, values);
   }
 
   /**
@@ -39,20 +42,18 @@ public class ActionTimeDataStore {
    *
    * @return unmodifiableMap of the datastore
    */
-  public synchronized List<StatRecord> getValues() {
+  public List<StatRecord> getValues() {
     List<StatRecord> statsList = new ArrayList<>();
 
-    for (String action : dataStore.keySet()) {
-      List<Integer> values = dataStore.get(action);
-      int count = values.size();
-      System.out.println("Action: " + action + " count: " + count);
-      int total = values.stream().reduce(0, Integer::sum);
-      System.out.println("Action: " + action + " total: " + total);
-      int avg = total / count;
-      System.out.println("Action: " + action + " avg: " + avg);
-
-      StatRecord record = new StatRecord(action, avg);
-      statsList.add(record);
+    synchronized (dataStore) {
+      for (String action : dataStore.keySet()) {
+        List<Integer> values = dataStore.get(action);
+        int count = values.size();
+        int total = values.stream().reduce(0, Integer::sum);
+        int avg = total / count;
+        StatRecord record = new StatRecord(action, avg);
+        statsList.add(record);
+      }
     }
     return statsList;
   }
