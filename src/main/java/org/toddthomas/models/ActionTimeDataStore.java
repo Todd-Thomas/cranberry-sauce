@@ -1,10 +1,12 @@
 package org.toddthomas.models;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ActionTimeDataStore {
 
-    private final static Map<String, List<Integer>> dataStore = new HashMap<>();
+    private final static ConcurrentMap<String, List<Integer>> dataStore = new ConcurrentHashMap<>();
 
     // TODO -TTH- This needs to be thread safe
     public void addEntry(String action, Integer time) {
@@ -22,7 +24,7 @@ public class ActionTimeDataStore {
     }
 
     public Map<String, List<Integer>> getValues() {
-        return Collections.unmodifiableMap(dataStore);
+        return Collections.synchronizedMap(dataStore);
     }
 
     protected void clearEntries() {
