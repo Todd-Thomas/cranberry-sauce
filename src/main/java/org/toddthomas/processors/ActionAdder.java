@@ -19,7 +19,7 @@ public class ActionAdder {
     }
 
     public ActionAdder() {
-        dataStore = new ActionTimeDataStore();
+        this.dataStore = new ActionTimeDataStore();
     }
 
     public void addAction(String input) throws JsonProcessingException {
