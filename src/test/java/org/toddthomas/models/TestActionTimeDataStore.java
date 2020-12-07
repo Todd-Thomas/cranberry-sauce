@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,13 +53,11 @@ public class TestActionTimeDataStore extends BaseTest {
   @Test
   public void testAddOneEntry() {
     dataStore.addEntry("jump", 100);
-    Map<String, List<Integer>> results = dataStore.getValues();
+    List<StatRecord> results = dataStore.getValues();
     assertNotNull(results);
-    assertTrue(results.containsKey("jump"));
-    List<Integer> times = results.get("jump");
-    assertNotNull(times);
-    assertEquals(1, times.size());
-    assertEquals(new Integer(100), times.get(0));
+    StatRecord record = results.get(0);
+    assertEquals("jump", record.getAction());
+    assertEquals(100, record.getAvg());
   }
 
   @Test
@@ -74,27 +71,29 @@ public class TestActionTimeDataStore extends BaseTest {
     dataStore.addEntry("jump", 25);
     dataStore.addEntry("stop", 55);
 
-    Map<String, List<Integer>> results = dataStore.getValues();
+    List<StatRecord> results = dataStore.getValues();
     assertNotNull(results);
 
-    validateEntry(results, "jump", new int[] {100, 25});
-    validateEntry(results, "sit", new int[] {23, 76, 45});
-    validateEntry(results, "run", new int[] {1234});
-    validateEntry(results, "hop", new int[] {43});
-    validateEntry(results, "stop", new int[] {55});
+    assertTrue(validateEntry(results, new StatRecord("jump", 62)));
+    assertTrue(validateEntry(results, new StatRecord("sit", 48)));
+    assertTrue(validateEntry(results, new StatRecord("run", 1234)));
+    assertTrue(validateEntry(results, new StatRecord("hop", 43)));
+    assertTrue(validateEntry(results, new StatRecord("stop", 55)));
   }
 
-  private void validateEntry(Map<String, List<Integer>> actual, String key, int[] expectedValues) {
-    assertTrue(actual.containsKey(key));
-    List<Integer> values = actual.get(key);
-
-    for (int expectedValue : expectedValues) {
-      assertTrue(values.contains(expectedValue));
+  private boolean validateEntry(List<StatRecord> actual, StatRecord expected) {
+    boolean success = false;
+    for (StatRecord record : actual) {
+      if (record.getAction().equals(expected.getAction()) && record.getAvg() == record.getAvg()) {
+        success = true;
+        break;
+      }
     }
+    return success;
   }
 
   private void assertEmptyMap() {
-    Map<String, List<Integer>> results = dataStore.getValues();
-    assertEquals(results, Collections.emptyMap());
+    List<StatRecord> results = dataStore.getValues();
+    assertEquals(results, Collections.emptyList());
   }
 }

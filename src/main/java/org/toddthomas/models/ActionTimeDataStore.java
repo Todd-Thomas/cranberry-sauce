@@ -1,18 +1,15 @@
 package org.toddthomas.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * In memory data store to keep track of actions and their times reported.
  */
 public class ActionTimeDataStore {
 
-  private static final ConcurrentMap<String, List<Integer>> dataStore = new ConcurrentHashMap<>();
+  private static final HashMap<String, List<Integer>> dataStore = new HashMap<>();
 
   /**
    * Adds an action, if it does not already exist, and associates the time.
@@ -40,10 +37,24 @@ public class ActionTimeDataStore {
   /**
    * Returns a thread safe copy of the map.
    *
-   * @return synchronizedMap of the datastore
+   * @return unmodifiableMap of the datastore
    */
-  public Map<String, List<Integer>> getValues() {
-    return Collections.synchronizedMap(dataStore);
+  public synchronized List<StatRecord> getValues() {
+    List<StatRecord> statsList = new ArrayList<>();
+
+    for (String action : dataStore.keySet()) {
+      List<Integer> values = dataStore.get(action);
+      int count = values.size();
+      System.out.println("Action: " + action + " count: " + count);
+      int total = values.stream().reduce(0, Integer::sum);
+      System.out.println("Action: " + action + " total: " + total);
+      int avg = total / count;
+      System.out.println("Action: " + action + " avg: " + avg);
+
+      StatRecord record = new StatRecord(action, avg);
+      statsList.add(record);
+    }
+    return statsList;
   }
 
   protected void clearEntries() {

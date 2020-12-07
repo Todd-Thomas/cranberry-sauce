@@ -30,33 +30,33 @@ public class MultiThreadAccess {
     threadRj.start();
     Thread threadG1 = new Thread(g1);
     threadG1.start();
-    Thread threadRr = new Thread(rR);
-    threadRr.start();
-    Thread threadRs = new Thread(rS);
-    threadRs.start();
-    Thread threadG2 = new Thread(g2);
-    threadG2.start();
-    Thread threadRc = new Thread(rC);
-    threadRc.start();
-    Thread threadRl = new Thread(rL);
-    threadRl.start();
-    Thread threadRw = new Thread(rW);
-    threadRw.start();
-    Thread threadRh = new Thread(rH);
-    threadRh.start();
-    Thread threadG3 = new Thread(g3);
-    threadG3.start();
+//    Thread threadRr = new Thread(rR);
+//    threadRr.start();
+//    Thread threadRs = new Thread(rS);
+//    threadRs.start();
+//    Thread threadG2 = new Thread(g2);
+//    threadG2.start();
+//    Thread threadRc = new Thread(rC);
+//    threadRc.start();
+//    Thread threadRl = new Thread(rL);
+//    threadRl.start();
+//    Thread threadRw = new Thread(rW);
+//    threadRw.start();
+//    Thread threadRh = new Thread(rH);
+//    threadRh.start();
+//    Thread threadG3 = new Thread(g3);
+//    threadG3.start();
 
     threadRj.join();
     threadG1.join();
-    threadRr.join();
-    threadRs.join();
-    threadG2.join();
-    threadRc.join();
-    threadRl.join();
-    threadRw.join();
-    threadRh.join();
-    threadG3.join();
+//    threadRr.join();
+//    threadRs.join();
+//    threadG2.join();
+//    threadRc.join();
+//    threadRl.join();
+//    threadRw.join();
+//    threadRh.join();
+//    threadG3.join();
   }
 
   public static class AddTask implements Runnable {
@@ -71,9 +71,10 @@ public class MultiThreadAccess {
     @Override
     public void run() {
       try {
-        for (int i = 0; i <= 15; i++) {
+        for (int i = 0; i <= 2; i++) {
           int time = 10 + (i * 12);
           String json = "{\"action\":\"" + action + "\",\"time\":" + time + "}";
+          System.out.println(json);
           actionAdder.addAction(json);
           Thread.sleep(25);
         }
@@ -95,10 +96,10 @@ public class MultiThreadAccess {
     @Override
     public void run() {
       try {
-        for (int i = 0; i <= 15; i++) {
+        for (int i = 0; i <= 5; i++) {
           String results = statsRetriever.getStats();
           System.out.println(threadNumber + "::RESULT:" + results);
-          Thread.sleep(20);
+          Thread.sleep(5);
         }
       } catch (JsonProcessingException | InterruptedException e) {
         e.printStackTrace();
