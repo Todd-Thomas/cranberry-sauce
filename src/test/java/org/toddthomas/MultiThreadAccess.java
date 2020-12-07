@@ -64,6 +64,10 @@ public class MultiThreadAccess {
     private final String action;
     private final int offset;
 
+    /**
+     * The offset is used merely to create a quasi-random value for the duration of the action
+     * as well as for the sleep duration.
+     */
     public AddTask(String action, int offset) {
       this.action = action;
       this.offset = offset;
@@ -76,8 +80,8 @@ public class MultiThreadAccess {
         for (int i = 0; i <= 15; i++) {
           int time = 10 + (i * 12) + offset;
           String json = "{\"action\":\"" + action + "\",\"time\":" + time + "}";
-          System.out.println(json);
           actionAdder.addAction(json);
+          System.out.println(json);
           Thread.sleep(50 + ((long) offset * i));
         }
       } catch (InterruptedException | JsonProcessingException e) {
@@ -91,6 +95,9 @@ public class MultiThreadAccess {
     private final String threadNumber;
     private final int offset;
 
+    /**
+     * The offset is used merely to create a quasi-random value for the sleep duration.
+     */
     public GetTask(String threadNumber, int offset) {
       this.threadNumber = threadNumber;
       this.offset = offset;

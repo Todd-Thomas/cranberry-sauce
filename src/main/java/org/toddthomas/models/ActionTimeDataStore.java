@@ -26,6 +26,8 @@ public class ActionTimeDataStore {
 
     List<Integer> values;
 
+    // Tricky Part: the data store itself needs to be synchronized so that only one thread
+    // can call addEntry at a time.
     synchronized (dataStore) {
       if (!dataStore.containsKey(action)) {
         values = new ArrayList<>();
@@ -45,6 +47,14 @@ public class ActionTimeDataStore {
   public List<StatRecord> getValues() {
     List<StatRecord> statsList = new ArrayList<>();
 
+    // Tricky Part: the data store itself needs to be synchronized so that only one thread
+    // can call getValues at a time. It is very important that this thread maintain a lock
+    // on this block of code because it needs to perform operations on the List to compute
+    // the average.
+    // I have purposely implemented the logic this way to show that even when other threads
+    // are calling addEntry, the values within this instance of the dataStore are not effect.
+    // Before synchronizing this block, when I was in debug mode, I could easily see that the
+    // values variable was being changed from the calls to addEntry.
     synchronized (dataStore) {
       for (String action : dataStore.keySet()) {
         List<Integer> values = dataStore.get(action);

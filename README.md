@@ -1,6 +1,7 @@
 # Action and Stats library
-A simple Java library that accepts action names, with times and can return the statistics
-based on the average length for each action.
+This code is intended to be a simple Java library that accepts action names, with times and 
+can return the statistics based on the average length for each action. Calls to `addAction` 
+and `getStats` are thread safe.
 
 ## How to Install Required Dependencies
 Since the requirements allowed for any language and stated that the application needed to run on Linux
@@ -75,3 +76,15 @@ In order to run the stress test, use the following command:
 mvn test -Dtest=MultiThreadAccess
 ```
 
+## Future Considerations
+In its current state, this library provides just enough in-memory storage vi a HashMap for 
+demonstration purposes. The storage could be enhanced to use an in-memory database. A file
+based storage would ensure data is kept between runs.
+
+Additionally, the logic to determine the average could be enhanced to reduce the amount of 
+space complexity by removing the list of integers and replacing it with a tuple that contains
+the total size and the number of elements that contributed to the size. 
+
+Finally, a thread pool can also be introduced to ensure that the process does not get overwhelmed
+with concurrent calls. A thread pool would ensure that the software will only allow for as 
+many threads as the underlying OS and container/hardware can handle.
