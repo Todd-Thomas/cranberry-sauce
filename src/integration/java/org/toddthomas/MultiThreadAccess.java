@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.toddthomas.processors.ActionAdder;
 import org.toddthomas.processors.StatsRetriever;
 
-public class TestMultiThreadAccess extends BaseTest {
+public class MultiThreadAccess {
 
     @Test
     public void testMultipleThreads() throws InterruptedException {

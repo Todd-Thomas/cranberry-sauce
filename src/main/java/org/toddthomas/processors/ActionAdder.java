@@ -29,7 +29,6 @@ public class ActionAdder {
 
     private AbstractMap.SimpleEntry<String, Integer> extractValues(String input) throws JsonProcessingException {
         JsonNode actionNode = OBJECT_MAPPER.readTree(input);
-        System.out.println(actionNode);
         String action = actionNode.get(ACTION).asText();
         Integer time = actionNode.get(TIME).asInt();
         return new AbstractMap.SimpleEntry<>(action, time);
