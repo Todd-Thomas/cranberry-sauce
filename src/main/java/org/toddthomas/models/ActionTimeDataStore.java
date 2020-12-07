@@ -1,24 +1,45 @@
 package org.toddthomas.models;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
+/**
+ * In memory data store to keep track of actions and their times reported.
+ */
 public class ActionTimeDataStore {
 
-    private final static Map<String, List<Integer>> dataStore = new HashMap<>();
+    private final static ConcurrentMap<String, List<Integer>> dataStore = new ConcurrentHashMap<>();
 
-    // TODO -TTH- This needs to be thread safe
+    /**
+     * Adds an action, if it does not already exist, and associates the time.
+     * If the action does exist, it appends the time to the list of current values.
+     * @param action to be recorded
+     * @param time associated with the action
+     */
     public void addEntry(String action, Integer time) {
-        List<Integer> value;
+        if (null == action || action.isEmpty() || null == time) return;
+
+        List<Integer> values;
 
         if (!dataStore.containsKey(action)) {
-            value = Collections.singletonList(time);
+            values = new ArrayList<>();
         } else {
-            value = dataStore.get(action);
-            value.add(time);
+            values = dataStore.get(action);
         }
-        dataStore.put(action, value);
+        values.add(time);
+        dataStore.put(action, values);
+    }
+
+    /**
+     * Returns a thread safe copy of the map
+     * @return synchronizedMap of the datastore
+     */
+    public Map<String, List<Integer>> getValues() {
+        return Collections.synchronizedMap(dataStore);
+    }
+
+    protected void clearEntries() {
+        dataStore.clear();
     }
 }
