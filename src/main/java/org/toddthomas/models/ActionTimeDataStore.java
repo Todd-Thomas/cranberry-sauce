@@ -8,7 +8,6 @@ public class ActionTimeDataStore {
 
     private final static ConcurrentMap<String, List<Integer>> dataStore = new ConcurrentHashMap<>();
 
-    // TODO -TTH- This needs to be thread safe
     public void addEntry(String action, Integer time) {
         if (null == action || action.isEmpty() || null == time) return;
 

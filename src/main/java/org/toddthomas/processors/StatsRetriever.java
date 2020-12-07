@@ -10,9 +10,7 @@ import java.util.Map;
 
 public class StatsRetriever {
 
-    private static final String AVG = "avg";
-
-    private ActionTimeDataStore actionTimeDataStore;
+    private final ActionTimeDataStore actionTimeDataStore;
 
     protected StatsRetriever(ActionTimeDataStore actionTimeDataStore) {
         this.actionTimeDataStore = actionTimeDataStore;
