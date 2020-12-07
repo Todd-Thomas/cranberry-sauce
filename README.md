@@ -1,6 +1,7 @@
-# Action and Stats library
-A simple Java library that accepts action names, with times and can return the statistics
-based on the average length for each action.
+# Action and Stats Library
+This code is intended to be a simple Java library that accepts action names, with times and 
+can return the statistics based on the average length for each action. Calls to `addAction` 
+and `getStats` are thread safe.
 
 ## How to Install Required Dependencies
 Since the requirements allowed for any language and stated that the application needed to run on Linux
